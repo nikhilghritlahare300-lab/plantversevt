@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product Details - PlantVerse</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .product-page-container { margin-top: 120px; display: flex; gap: 50px; margin-bottom: 80px; }
+        .product-gallery { flex: 1; }
+        .product-gallery img { width: 100%; border-radius: 12px; box-shadow: var(--shadow-sm); }
+        .product-details { flex: 1; }
+        .pd-category { color: var(--accent-color); font-weight: 600; text-transform: uppercase; font-size: 0.9rem; letter-spacing: 1px; margin-bottom: 10px; }
+        .pd-title { font-size: 2.5rem; color: var(--primary-color); margin-bottom: 15px; }
+        .pd-rating { margin-bottom: 20px; color: #FFC107; font-size: 1.1rem; }
+        .pd-rating span { color: var(--text-light); font-size: 0.9rem; margin-left: 10px; }
+        .pd-price { font-size: 2rem; font-weight: bold; color: var(--text-dark); margin-bottom: 25px; display: flex; align-items: center; gap: 15px; }
+        .pd-price .original { text-decoration: line-through; color: var(--text-light); font-size: 1.2rem; font-weight: normal; }
+        .pd-desc { color: var(--text-light); line-height: 1.8; margin-bottom: 30px; font-size: 1.1rem; }
+        
+        .pd-actions { display: flex; gap: 15px; margin-bottom: 40px; align-items: center; }
+        .pd-qty { display: flex; border: 1px solid var(--border-color); border-radius: 4px; overflow: hidden; }
+        .pd-qty button { width: 40px; height: 50px; background: var(--bg-light); border: none; cursor: pointer; font-size: 1.2rem; }
+        .pd-qty input { width: 50px; text-align: center; border: none; font-weight: bold; font-family: var(--font-main); }
+        .pd-btn { flex: 1; height: 50px; font-size: 1.1rem; }
+        
+        .pd-meta { border-top: 1px solid var(--border-color); padding-top: 20px; color: var(--text-light); }
+        .pd-meta div { margin-bottom: 10px; }
+        .pd-meta span { color: var(--text-dark); font-weight: 500; }
+        
+        @media (max-width: 768px) {
+            .product-page-container { flex-direction: column; }
+            .pd-actions { flex-direction: column; }
+            .pd-qty { width: 100%; justify-content: space-between; }
+            .pd-qty input { flex: 1; }
+        }
+    </style>
+</head>
+<body>
+
+    <header id="header">
+        <div class="container nav-container">
+            <a href="index.html" class="logo"><i class="fas fa-leaf"></i> PlantVerse</a>
+            <ul class="nav-links">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="shop.html">Shop</a></li>
+            </ul>
+            <div class="nav-icons">
+                <div id="cart-icon"><i class="fas fa-shopping-cart"></i><span class="badge" id="cart-count">0</span></div>
+            </div>
+        </div>
+    </header>
+
+    <div class="container product-page-container fade-in" id="product-container">
+        <!-- Injected via JS -->
+    </div>
+
+    <!-- Related Products -->
+    <section class="products-section">
+        <div class="container">
+            <h2 class="section-title">You May Also Like</h2>
+            <div class="product-grid" id="related-products">
+                <!-- Injected via JS -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Cart Sidebar & Toasts -->
+    <div class="modal-overlay" id="modal-overlay-cart" style="z-index: 2400;"></div>
+    <div class="cart-sidebar" id="cart-sidebar">
+        <div class="cart-header"><h3>Your Cart</h3><i class="fas fa-times close-cart" id="close-cart"></i></div>
+        <div class="cart-items" id="cart-items"></div>
+        <div class="cart-footer">
+            <div class="cart-total"><span>Total:</span><span id="cart-total-price">₹0</span></div>
+            <a href="cart.html" class="btn btn-outline" style="width:100%; margin-bottom:10px;">View Cart</a>
+            <a href="checkout.html" class="btn" style="width:100%;">Checkout</a>
+        </div>
+    </div>
+    
+    <div class="toast-container" id="toast-container"></div>
+
+    <footer>
+        <div class="container" style="text-align: center; padding: 20px;">
+            <p>&copy; 2026 PlantVerse.</p>
+        </div>
+    </footer>
+
+    <script src="js/data.js"></script>
+    <script src="js/app.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const params = new URLSearchParams(window.location.search);
+            const id = parseInt(params.get('id')) || 1; // Default to first product
+            
+            const product = products.find(p => p.id === id);
+            
+            if(!product) {
+                document.getElementById('product-container').innerHTML = '<h2>Product not found</h2>';
+                return;
+            }
+            
+            const originalPrice = Math.round(product.price * 1.3); // Fake discount
+            
+            document.title = `${product.name} - PlantVerse`;
+            
+            document.getElementById('product-container').innerHTML = `
+                <div class="product-gallery">
+                    <img src="${product.image}" alt="${product.name}">
+                </div>
+                <div class="product-details">
+                    <div class="pd-category">${product.category}</div>
+                    <h1 class="pd-title">${product.name}</h1>
+                    <div class="pd-rating">
+                        ${getRatingStars(product.rating)}
+                        <span>(${product.reviews} customer reviews)</span>
+                    </div>
+                    <div class="pd-price">
+                        ₹${product.price}
+                        <span class="original">₹${originalPrice}</span>
+                    </div>
+                    <p class="pd-desc">${product.description}</p>
+                    
+                    <div class="pd-actions">
+                        <div class="pd-qty">
+                            <button onclick="document.getElementById('pd-q').value = Math.max(1, parseInt(document.getElementById('pd-q').value) - 1)">-</button>
+                            <input type="number" id="pd-q" value="1" min="1" readonly>
+                            <button onclick="document.getElementById('pd-q').value = parseInt(document.getElementById('pd-q').value) + 1">+</button>
+                        </div>
+                        <button class="btn pd-btn" onclick="addMultipleToCart(${product.id})">Add to Cart</button>
+                        <button class="btn pd-btn" style="background:var(--accent-color);" onclick="buyNow(${product.id})">Buy Now</button>
+                        <button class="btn btn-outline" style="height: 50px; width: 50px; display:flex; justify-content:center; align-items:center;" onclick="toggleWishlist(${product.id}, event)">
+                            <i class="fa-heart ${wishlist.includes(product.id) ? 'fas active' : 'far'}"></i>
+                        </button>
+                    </div>
+                    
+                    <div class="pd-meta">
+                        <div>SKU: <span>PV-${product.id.toString().padStart(4, '0')}</span></div>
+                        <div>Category: <span>${product.category}${product.secondaryCategory ? `, ${product.secondaryCategory}` : ''}</span></div>
+                        <div>Tags: <span>Houseplant, Green, Decor</span></div>
+                    </div>
+                </div>
+            `;
+            
+            window.addMultipleToCart = function(pid) {
+                const q = parseInt(document.getElementById('pd-q').value);
+                const existing = cart.find(item => item.id === pid);
+                if(existing) {
+                    existing.quantity += q;
+                } else {
+                    const p = products.find(x => x.id === pid);
+                    cart.push({ ...p, quantity: q });
+                }
+                localStorage.setItem('cart', JSON.stringify(cart));
+                updateCartCount();
+                showToast(`${q} x ${product.name} added to cart!`);
+            };
+            
+            window.buyNow = function(pid) {
+                addMultipleToCart(pid);
+                window.location.href = 'checkout.html';
+            };
+            
+            // Related products
+            const related = products.filter(p => p.category === product.category && p.id !== product.id).slice(0, 4);
+            document.getElementById('related-products').innerHTML = related.map(createProductCard).join('');
+        });
+    </script>
+</body>
+</html>
