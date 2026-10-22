@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shop - PlantVerse</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/shop.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .shop-container {
+            display: flex;
+            gap: 30px;
+            margin-top: 100px;
+            padding-bottom: 60px;
+        }
+
+        .shop-sidebar {
+            width: 250px;
+            flex-shrink: 0;
+        }
+
+        .filter-section {
+            margin-bottom: 30px;
+        }
+
+        .filter-section h3 {
+            margin-bottom: 15px;
+            font-size: 1.1rem;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 10px;
+        }
+
+        .filter-list li {
+            margin-bottom: 10px;
+        }
+
+        .filter-list label {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            cursor: pointer;
+            color: var(--text-light);
+        }
+
+        .filter-list input {
+            cursor: pointer;
+        }
+
+        .price-range-slider {
+            width: 100%;
+            margin-top: 10px;
+        }
+
+        .price-display {
+            margin-top: 10px;
+            font-size: 0.9rem;
+            color: var(--text-light);
+            font-weight: 500;
+        }
+
+        .shop-main {
+            flex: 1;
+        }
+
+        .shop-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .sort-select {
+            padding: 8px;
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            outline: none;
+        }
+
+        .pagination {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 40px;
+        }
+
+        .page-btn {
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .page-btn.active {
+            background: var(--primary-color);
+            color: white;
+            border-color: var(--primary-color);
+        }
+
+        .page-btn:hover:not(.active) {
+            background: var(--bg-light);
+        }
+
+        @media (max-width: 768px) {
+            .shop-container {
+                flex-direction: column;
+            }
+
+            .shop-sidebar {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Header -->
+    <header id="header">
+        <div class="container nav-container">
+            <a href="index.html" class="logo">
+                <i class="fas fa-leaf"></i> PlantVerse
+            </a>
+
+            <ul class="nav-links">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="shop.html" style="color:var(--secondary-color);">Shop</a></li>
+                <li><a href="about.html">About</a></li>
+                <li><a href="blog.html">Blog</a></li>
+                <li><a href="contact.html">Contact</a></li>
+            </ul>
+
+            <div class="nav-icons">
+                <div id="search-icon"><i class="fas fa-search"></i></div>
+                <div id="user-icon"><i class="far fa-user"></i></div>
+                <a href="wishlist.html" id="heart-icon">
+                    <i class="far fa-heart"></i>
+                    <span class="badge" id="wishlist-count">0</span>
+                </a>
+                <div id="cart-icon">
+                    <i class="fas fa-shopping-cart"></i>
+                    <span class="badge" id="cart-count">0</span>
+                </div>
+                <div class="mobile-toggle"><i class="fas fa-bars"></i></div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Search Overlay -->
+    <div class="modal-overlay" id="search-modal">
+        <div class="modal-content" style="max-width: 600px;">
+            <i class="fas fa-times close-modal"></i>
+            <h2>Search Products</h2>
+            <input type="text" id="search-input" placeholder="Search for plants..."
+                style="width:100%; padding: 12px; margin-top: 20px; border: 1px solid var(--border-color); border-radius: 4px; font-size: 1rem;">
+            <div id="search-results" style="margin-top:20px; max-height: 300px; overflow-y: auto;"></div>
+        </div>
+    </div>
+
+    <!-- Shop Content -->
+    <div class="container shop-container">
+        <!-- Sidebar -->
+        <aside class="shop-sidebar fade-in">
+            <div class="filter-section">
+                <h3>Categories</h3>
+                <ul class="filter-list" id="category-filters">
+                    <li><label><input type="checkbox" value="Indoor"> Indoor Plants</label></li>
+                    <li><label><input type="checkbox" value="Outdoor"> Outdoor Plants</label></li>
+                    <li><label><input type="checkbox" value="Succulents"> Succulents</label></li>
+                    <li><label><input type="checkbox" value="Air Purifying"> Air Purifying</label></li>
+                    <li><label><input type="checkbox" value="Flowering"> Flowering</label></li>
+                    <li><label><input type="checkbox" value="Bonsai"> Bonsai</label></li>
+                </ul>
+            </div>
+            <div class="filter-section">
+                <h3>Price Range</h3>
+                <input type="range" id="price-slider" class="price-range-slider" min="0" max="2000" value="2000">
+                <div class="price-display">Up to: ₹<span id="price-value">2000</span></div>
+            </div>
+        </aside>
+
+        <!-- Main -->
+        <main class="shop-main">
+            <div class="shop-header fade-in">
+                <div id="result-count">Showing results</div>
+                <select id="sort-select" class="sort-select">
+                    <option value="default">Default Sorting</option>
+                    <option value="price-low">Price: Low to High</option>
+                    <option value="price-high">Price: High to Low</option>
+                    <option value="rating">Highest Rated</option>
+                </select>
+            </div>
+
+            <div class="product-grid" id="shop-products">
+                <!-- Products via JS -->
+            </div>
+
+            <div class="pagination fade-in">
+                <div class="page-btn active">1</div>
+                <div class="page-btn">2</div>
+                <div class="page-btn"><i class="fas fa-chevron-right"></i></div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Cart Sidebar & Modals (Reused from Index) -->
+    <div class="modal-overlay" id="modal-overlay-cart" style="z-index: 2400;"></div>
+    <div class="cart-sidebar" id="cart-sidebar">
+        <div class="cart-header">
+            <h3>Your Cart</h3>
+            <i class="fas fa-times close-cart" id="close-cart"></i>
+        </div>
+        <div class="cart-items" id="cart-items"></div>
+        <div class="cart-footer">
+            <div class="cart-total">
+                <span>Total:</span>
+                <span id="cart-total-price">₹0</span>
+            </div>
+            <a href="cart.html" class="btn btn-outline" style="width:100%; margin-bottom:10px;">View Cart</a>
+            <a href="checkout.html" class="btn" style="width:100%;">Checkout</a>
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="quick-view-modal">
+        <div class="modal-content">
+            <i class="fas fa-times close-modal"></i>
+            <div class="qv-image"><img id="qv-image-el" src="" alt="Product"></div>
+            <div class="qv-details">
+                <h2 id="qv-title">Product Name</h2>
+                <div id="qv-price" class="qv-price">₹0</div>
+                <p id="qv-desc" class="qv-desc">Description</p>
+                <div class="qty-control">
+                    <span>Quantity: </span>
+                    <button class="qty-btn">-</button>
+                    <span>1</span>
+                    <button class="qty-btn">+</button>
+                </div>
+                <button class="btn" id="qv-add-cart" style="width:100%;">Add to Cart</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="toast-container" id="toast-container"></div>
+    <button id="back-to-top"><i class="fas fa-arrow-up"></i></button>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-col">
+                    <h3><i class="fas fa-leaf"></i> PlantVerse</h3>
+                    <p>Your one-stop destination for premium plants, pots, and accessories.</p>
+                </div>
+                <div class="footer-col">
+                    <h3>Quick Links</h3>
+                    <ul class="footer-links">
+                        <li><a href="index.html">Home</a></li>
+                        <li><a href="shop.html">Shop</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2026 PlantVerse. All Rights Reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="js/data.js"></script>
+    <script src="js/app.js"></script>
+    <script>
+        // Shop specific logic
+        document.addEventListener('DOMContentLoaded', () => {
+            const container = document.getElementById('shop-products');
+            const catFilters = document.querySelectorAll('#category-filters input');
+            const priceSlider = document.getElementById('price-slider');
+            const priceValue = document.getElementById('price-value');
+            const sortSelect = document.getElementById('sort-select');
+            const resultCount = document.getElementById('result-count');
+            const searchIcon = document.getElementById('search-icon');
+            const searchModal = document.getElementById('search-modal');
+            const searchInput = document.getElementById('search-input');
+            const searchResults = document.getElementById('search-results');
+
+            // Search Modal Toggle
+            if (searchIcon) {
+                searchIcon.addEventListener('click', () => {
+                    searchModal.classList.add('active');
+                    setTimeout(() => searchInput.focus(), 300);
+                });
+            }
+
+            // Search functionality
+            searchInput.addEventListener('input', (e) => {
+                const query = e.target.value.toLowerCase();
+                if (query.length < 2) { searchResults.innerHTML = ''; return; }
+
+                const matches = products.filter(p => p.name.toLowerCase().includes(query) || p.category.toLowerCase().includes(query));
+
+                if (matches.length === 0) {
+                    searchResults.innerHTML = '<p>No products found.</p>';
+                } else {
+                    searchResults.innerHTML = matches.map(p => `
+                        <div style="display:flex; gap:15px; margin-bottom:15px; cursor:pointer;" onclick="window.location.href='shop.html?search=${p.id}'">
+                            <img src="${p.image}" style="width:50px; height:50px; object-fit:cover; border-radius:4px;">
+                            <div>
+                                <h4 style="font-size:1rem; margin-bottom:5px;">${p.name}</h4>
+                                <div style="color:var(--primary-color);">₹${p.price}</div>
+                            </div>
+                        </div>
+                    `).join('');
+                }
+            });
+
+            // Check URL for category
+            const urlParams = new URLSearchParams(window.location.search);
+            const catParam = urlParams.get('cat');
+            if (catParam) {
+                catFilters.forEach(cb => {
+                    if (cb.value === catParam) cb.checked = true;
+                });
+            }
+
+            function renderShop() {
+                // Get checked categories
+                const checkedCats = Array.from(catFilters).filter(cb => cb.checked).map(cb => cb.value);
+                const maxPrice = parseInt(priceSlider.value);
+
+                // Filter
+                let filtered = products.filter(p => {
+                    const passCat = checkedCats.length === 0 || checkedCats.includes(p.category) || checkedCats.includes(p.secondaryCategory);
+                    const passPrice = p.price <= maxPrice;
+                    return passCat && passPrice;
+                });
+
+                // Sort
+                const sortVal = sortSelect.value;
+                if (sortVal === 'price-low') filtered.sort((a, b) => a.price - b.price);
+                if (sortVal === 'price-high') filtered.sort((a, b) => b.price - a.price);
+                if (sortVal === 'rating') filtered.sort((a, b) => b.rating - a.rating);
+
+                // Render
+                resultCount.innerText = `Showing ${filtered.length} results`;
+
+                if (filtered.length === 0) {
+                    container.innerHTML = '<div style="grid-column: 1/-1; text-align:center; padding: 50px;">No products match your filters.</div>';
+                } else {
+                    container.innerHTML = filtered.map(createProductCard).join('');
+                    setupObservers();
+                }
+            }
+
+            catFilters.forEach(cb => cb.addEventListener('change', renderShop));
+            priceSlider.addEventListener('input', (e) => {
+                priceValue.innerText = e.target.value;
+                renderShop();
+            });
+            sortSelect.addEventListener('change', renderShop);
+
+            renderShop();
+        });
+    </script>
+</body>
+
+</html>

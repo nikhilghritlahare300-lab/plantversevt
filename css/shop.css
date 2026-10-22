@@ -1,0 +1,24 @@
+.shop-container { display: flex; gap: 30px; margin-top: 100px; padding-bottom: 60px; }
+.shop-sidebar { width: 250px; flex-shrink: 0; }
+.filter-section { margin-bottom: 30px; }
+.filter-section h3 { margin-bottom: 15px; font-size: 1.1rem; border-bottom: 1px solid var(--border-color); padding-bottom: 10px; }
+.filter-list li { margin-bottom: 10px; }
+.filter-list label { display: flex; align-items: center; gap: 10px; cursor: pointer; color: var(--text-light); }
+.filter-list input { cursor: pointer; }
+
+.price-range-slider { width: 100%; margin-top: 10px; }
+.price-display { margin-top: 10px; font-size: 0.9rem; color: var(--text-light); font-weight: 500; }
+
+.shop-main { flex: 1; }
+.shop-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+.sort-select { padding: 8px; border: 1px solid var(--border-color); border-radius: 4px; outline: none; }
+
+.pagination { display: flex; justify-content: center; gap: 10px; margin-top: 40px; }
+.page-btn { width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; border: 1px solid var(--border-color); border-radius: 4px; cursor: pointer; transition: var(--transition); }
+.page-btn.active { background: var(--primary-color); color: white; border-color: var(--primary-color); }
+.page-btn:hover:not(.active) { background: var(--bg-light); }
+
+@media (max-width: 768px) {
+    .shop-container { flex-direction: column; }
+    .shop-sidebar { width: 100%; }
+}

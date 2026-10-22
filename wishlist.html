@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wishlist - PlantVerse</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+
+    <header id="header">
+        <div class="container nav-container">
+            <a href="index.html" class="logo"><i class="fas fa-leaf"></i> PlantVerse</a>
+            <ul class="nav-links">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="shop.html">Shop</a></li>
+            </ul>
+            <div class="nav-icons">
+                <a href="wishlist.html" id="heart-icon"><i class="far fa-heart" style="color:var(--primary-color);"></i><span class="badge" id="wishlist-count">0</span></a>
+                <div id="cart-icon"><i class="fas fa-shopping-cart"></i><span class="badge" id="cart-count">0</span></div>
+            </div>
+        </div>
+    </header>
+
+    <div class="container" style="margin-top: 120px; min-height: 60vh;">
+        <h2 style="margin-bottom: 30px; color: var(--primary-color); text-align: center;">My Wishlist</h2>
+        
+        <div class="product-grid" id="wishlist-products">
+            <!-- Rendered by JS -->
+        </div>
+    </div>
+
+    <!-- Modals -->
+    <div class="toast-container" id="toast-container"></div>
+
+    <script src="js/data.js"></script>
+    <script src="js/app.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const container = document.getElementById('wishlist-products');
+            
+            function renderWishlistPage() {
+                if(wishlist.length === 0) {
+                    container.innerHTML = '<div style="grid-column: 1/-1; text-align:center; padding: 50px;">Your wishlist is empty. <br><br><a href="shop.html" class="btn">Explore Products</a></div>';
+                    return;
+                }
+                
+                const items = products.filter(p => wishlist.includes(p.id));
+                container.innerHTML = items.map(p => {
+                    return `
+                        <div class="product-card fade-in visible" data-id="${p.id}">
+                            <button class="wishlist-btn active" onclick="removeWishlist(${p.id}, event)">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                            <div class="product-image">
+                                <img src="${p.image}" alt="${p.name}">
+                            </div>
+                            <div class="product-info">
+                                <h3 class="product-title">${p.name}</h3>
+                                <div class="product-price-row">
+                                    <div class="product-price">₹${p.price}</div>
+                                    <button class="btn btn-outline" style="padding: 8px 15px; font-size:0.8rem;" onclick="addToCart(${p.id}, event)">Add to Cart</button>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                }).join('');
+            }
+            
+            window.removeWishlist = function(id, event) {
+                toggleWishlist(id, event);
+                renderWishlistPage();
+            };
+            
+            renderWishlistPage();
+        });
+    </script>
+</body>
+</html>

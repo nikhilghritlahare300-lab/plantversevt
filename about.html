@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About Us - PlantVerse</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .about-hero { text-align: center; padding: 100px 20px; background: var(--bg-light); margin-top: 80px; }
+        .about-hero h1 { font-size: 3rem; color: var(--primary-color); margin-bottom: 20px; }
+        .about-hero p { max-width: 700px; margin: 0 auto; color: var(--text-light); font-size: 1.1rem; line-height: 1.8; }
+        
+        .mission-section { display: flex; gap: 50px; align-items: center; padding: 80px 0; }
+        .mission-text { flex: 1; }
+        .mission-text h2 { font-size: 2.5rem; color: var(--primary-color); margin-bottom: 20px; }
+        .mission-image { flex: 1; }
+        .mission-image img { width: 100%; border-radius: 12px; box-shadow: var(--shadow-md); }
+        
+        .team-section { padding: 80px 0; background: var(--bg-light); text-align: center; }
+        .team-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 30px; margin-top: 40px; }
+        .team-card { background: white; padding: 30px; border-radius: 8px; box-shadow: var(--shadow-sm); }
+        .team-card img { width: 150px; height: 150px; border-radius: 50%; object-fit: cover; margin-bottom: 20px; }
+        .team-card h3 { color: var(--text-dark); margin-bottom: 5px; }
+        .team-card p { color: var(--secondary-color); font-weight: 500; }
+        
+        @media (max-width: 768px) {
+            .mission-section { flex-direction: column; }
+        }
+    </style>
+</head>
+<body>
+
+    <header id="header">
+        <div class="container nav-container">
+            <a href="index.html" class="logo"><i class="fas fa-leaf"></i> PlantVerse</a>
+            <ul class="nav-links">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="shop.html">Shop</a></li>
+                <li><a href="about.html" style="color:var(--secondary-color);">About</a></li>
+                <li><a href="blog.html">Blog</a></li>
+            </ul>
+        </div>
+    </header>
+
+    <div class="about-hero fade-in">
+        <div class="container">
+            <h1>We Bring Nature to Your Home</h1>
+            <p>PlantVerse was founded with a simple mission: to make it easier for people to discover, buy, and care for beautiful plants. We believe that plants not only make spaces look better, but they make us feel better too.</p>
+        </div>
+    </div>
+
+    <div class="container mission-section fade-in">
+        <div class="mission-text">
+            <h2>Our Mission & Vision</h2>
+            <p style="color: var(--text-light); line-height: 1.8; margin-bottom: 20px;">We want to transform every home and office into a thriving green space. In today's fast-paced urban environment, the connection to nature is often lost. We are here to bridge that gap by providing top-quality, healthy plants straight from our greenhouses to your door.</p>
+            <p style="color: var(--text-light); line-height: 1.8;">Our vision is a greener, more sustainable world where everyone can experience the joy and health benefits of living with plants. We source our plants responsibly and use eco-friendly packaging to minimize our environmental footprint.</p>
+        </div>
+        <div class="mission-image">
+            <img src="https://images.unsplash.com/photo-1466692476868-aef1dfb1e735?w=800" alt="Greenhouse">
+        </div>
+    </div>
+
+    <div class="team-section">
+        <div class="container fade-in">
+            <h2 style="font-size: 2.5rem; color: var(--primary-color);">Meet Our Experts</h2>
+            <p style="color: var(--text-light); margin-top: 10px;">The passionate botanists and designers behind PlantVerse.</p>
+            
+            <div class="team-grid">
+                <div class="team-card">
+                    <img src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=300" alt="Team Member">
+                    <h3>Sarah Jenkins</h3>
+                    <p>Founder & Botanist</p>
+                </div>
+                <div class="team-card">
+                    <img src="https://images.unsplash.com/photo-1560250097-0b93528c311a?w=300" alt="Team Member">
+                    <h3>Michael Chen</h3>
+                    <p>Horticulture Director</p>
+                </div>
+                <div class="team-card">
+                    <img src="https://images.unsplash.com/photo-1573497019940-1c28c88b4f3e?w=300" alt="Team Member">
+                    <h3>Emma Davis</h3>
+                    <p>Lead Care Specialist</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <div class="container" style="text-align: center; padding: 20px;">
+            <p>&copy; 2026 PlantVerse.</p>
+        </div>
+    </footer>
+    <script src="js/app.js"></script>
+
+</body>
+</html>
